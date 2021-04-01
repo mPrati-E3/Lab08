@@ -7,6 +7,10 @@ package it.polito.tdp.extflightdelays;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import it.polito.tdp.extflightdelays.model.Airport;
 import it.polito.tdp.extflightdelays.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,10 +39,31 @@ public class FXMLController {
 
     @FXML
     void doAnalizzaAeroporti(ActionEvent event) {
-    	//TODO
+    	
+    	int MigliaUtente;
+    	
+    	try {
+    		MigliaUtente=Integer.parseInt(distanzaMinima.getText());
+    	} catch (NumberFormatException e) {
+    		txtResult.appendText("La distanza minima deve essere numerica! \n");
+    		return;
+    	}
+    	
+    	this.Stampante(this.model.analizzaAeroporti(MigliaUtente));
+    	
+	
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    private void Stampante(Graph<Airport, DefaultWeightedEdge> tratte) {
+		txtResult.clear();
+		txtResult.appendText("Numero di vertici: ");
+		txtResult.appendText("Numero di archi: ");
+		
+		//TODO: stampa di tutti gli archi con relativo peso
+		
+	}
+
+	@FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
         assert distanzaMinima != null : "fx:id=\"distanzaMinima\" was not injected: check your FXML file 'Scene.fxml'.";

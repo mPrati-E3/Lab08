@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import it.polito.tdp.extflightdelays.model.Airline;
 import it.polito.tdp.extflightdelays.model.Airport;
@@ -90,5 +91,15 @@ public class ExtFlightDelaysDAO {
 			System.out.println("Errore connessione al database");
 			throw new RuntimeException("Error Connection Database");
 		}
+	}
+
+	public Map<Integer, Airport> getDBAirport() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Flight> getDBFlight(int migliaUtente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
