@@ -37,13 +37,15 @@ public class FXMLController {
     @FXML // fx:id="btnAnalizza"
     private Button btnAnalizza; // Value injected by FXMLLoader
 
+    //funzione prinicpale che si attiva quando premo il pulsante
+    //se l'input è accettabile, chiama la funzione stampante che stamperà ciò che è restituito dal model
     @FXML
     void doAnalizzaAeroporti(ActionEvent event) {
     	
-    	int MigliaUtente;
+    	Double MigliaUtente;
     	
     	try {
-    		MigliaUtente=Integer.parseInt(distanzaMinima.getText());
+    		MigliaUtente=Double.parseDouble(distanzaMinima.getText());
     	} catch (NumberFormatException e) {
     		txtResult.appendText("La distanza minima deve essere numerica! \n");
     		return;
@@ -54,13 +56,19 @@ public class FXMLController {
 	
     }
 
+    //stampa un grafo nella text area
     private void Stampante(Graph<Airport, DefaultWeightedEdge> tratte) {
+    	
 		txtResult.clear();
 		txtResult.appendText("Numero di vertici: "+tratte.vertexSet().size()+"\n");
 		txtResult.appendText("Numero di archi: "+tratte.edgeSet().size()+"\n\n\n");
 	
+		for (DefaultWeightedEdge dwe : tratte.edgeSet()) {
+			txtResult.appendText(tratte.getEdgeSource(dwe).getAirportName()+" -> ");
+			txtResult.appendText(tratte.getEdgeTarget(dwe).getAirportName()+" - Peso: ");
+			txtResult.appendText(tratte.getEdgeWeight(dwe)+"\n");
+		}
 		
-		//TODO: stampa di tutti gli archi con relativo peso
 		
 	}
 

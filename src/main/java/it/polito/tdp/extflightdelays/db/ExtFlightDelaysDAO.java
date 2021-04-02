@@ -7,14 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import it.polito.tdp.extflightdelays.model.Airline;
 import it.polito.tdp.extflightdelays.model.Airport;
+import it.polito.tdp.extflightdelays.model.BoxEdge;
 import it.polito.tdp.extflightdelays.model.Flight;
 
 public class ExtFlightDelaysDAO {
 
+	//prende tutte le linee aree dal db
 	public List<Airline> loadAllAirlines() {
 		String sql = "SELECT * from airlines";
 		List<Airline> result = new ArrayList<Airline>();
@@ -38,6 +39,7 @@ public class ExtFlightDelaysDAO {
 		}
 	}
 
+	// prende tutti gli aeroporti dal db
 	public List<Airport> loadAllAirports() {
 		String sql = "SELECT * FROM airports";
 		List<Airport> result = new ArrayList<Airport>();
@@ -64,6 +66,7 @@ public class ExtFlightDelaysDAO {
 		}
 	}
 
+	//prende tutti i voli dal db
 	public List<Flight> loadAllFlights() {
 		String sql = "SELECT * FROM flights";
 		List<Flight> result = new LinkedList<Flight>();
@@ -93,10 +96,45 @@ public class ExtFlightDelaysDAO {
 		}
 	}
 
-	/*SELECT AVG(distance)
-	FROM flights
-	WHERE (origin_airport_id=85 AND destination_airport_id=151)
-	OR (origin_airport_id=151 AND destination_airport_id=85)*/
+	//dati due aeroporti, ritorno la distanza media dei voli dei due (indipendente da partenza-arrivo)
+	public BoxEdge generateNewEdge(int A, int B) {
+		
+		String sql = "SELECT AVG(distance) as media\r\n"
+				+ "	FROM flights\r\n"
+				+ "	WHERE (origin_airport_id=? AND destination_airport_id=?)\r\n"
+				+ "	OR (origin_airport_id=? AND destination_airport_id=?)";
+		
+		BoxEdge BOX = new BoxEdge();
 
+		try {
+			
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			st.setInt(1,A);
+			st.setInt(2,B);
+			st.setInt(3,B);
+			st.setInt(4,A);
+			
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				
+				BOX.setVerticeA(A);
+				BOX.setVerticeB(B);
+				BOX.setMediaDistanza(rs.getDouble("media"));
+				
+			}
+
+			conn.close();
+			return BOX;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Errore connessione al database");
+			throw new RuntimeException("Error Connection Database");
+		}
+	}
+	
 
 }

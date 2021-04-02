@@ -14,6 +14,7 @@ import it.polito.tdp.extflightdelays.db.ExtFlightDelaysDAO;
 
 public class Model {
 	
+	//dischiaro grafo, aeroporti, voli e dao
 	private Graph<Airport, DefaultWeightedEdge> graph;
 	private List<Airport> ListAirport;
 	private Map<Integer, Airport> MapAirport;
@@ -22,8 +23,10 @@ public class Model {
 	
 	public Model() {
 		
+		//definisco il dao
 		this.dao=new ExtFlightDelaysDAO();
 		
+		//definisco il grafo di base
 		this.graph = new DirectedWeightedMultigraph<Airport, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		
 		//creazione vertici del grafo base
@@ -44,12 +47,14 @@ public class Model {
 					f.getDistance()); 
 		}
 		
-		System.out.println("Grafo base creato: V="+graph.vertexSet().size()+" E="+graph.edgeSet().size());
-		
 	}
 
-	public Graph<Airport, DefaultWeightedEdge> analizzaAeroporti(int migliaUtente) {
+	//funzione principale: date le miglia utente da controller, genero un nuovo grafo che abbia come
+	//nodi gli stessi di quello base ma gli archi sono non direzionali e hanno come peso la media delle
+	//distanze tra due nodi di quello base
+	public Graph<Airport, DefaultWeightedEdge> analizzaAeroporti(Double migliaUtente) {
 		
+		//dichiaro e definisco il grafo che verrà poi ritornato (vuoto)
 		Graph<Airport, DefaultWeightedEdge> UserGraph = new SimpleWeightedGraph<Airport, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		
 		//genero i vertici del grafo utente
@@ -57,22 +62,23 @@ public class Model {
 			UserGraph.addVertex(a);
 		}
 		
+		//genero gli archi
 		for (DefaultWeightedEdge dwe : graph.edgeSet()) {
 			
+			BoxEdge BOX = dao.generateNewEdge(graph.getEdgeSource(dwe).getId(), graph.getEdgeTarget(dwe).getId());
 			
-			/*
-			Graphs.addEdge(
+			if (BOX.getMediaDistanza()>=migliaUtente) {
+				Graphs.addEdge(
 					UserGraph, 
-					MapAirport.get(graph.getEdgeSource(NewEdge)), 
-					MapAirport.get(f.getDestinationAirportId()), 
-					f.getDistance());
-			}*/
+					MapAirport.get(BOX.getVerticeA()), 
+					MapAirport.get(BOX.getVerticeB()), 
+					BOX.getMediaDistanza());
+			}
+			
 		}
 		
-		//secondo me conviene creare un graph che ha tutto, poi creare un grafo vuoto e popolarlo con i PATH
-		// che vanno bene ovvero che hanno la media delle DISTANCE < migliaUtente
 		
-		return null;
+		return UserGraph;
 	}
 	
 	

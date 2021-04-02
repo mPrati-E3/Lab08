@@ -2,6 +2,7 @@ package it.polito.tdp.extflightdelays.model;
 
 import java.time.LocalDateTime;
 
+//javabean che descrive un volo del db
 public class Flight {
 
 	private int id;

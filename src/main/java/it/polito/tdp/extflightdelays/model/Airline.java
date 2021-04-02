@@ -1,5 +1,6 @@
 package it.polito.tdp.extflightdelays.model;
 
+//javabean che descrive una linea aerea
 public class Airline {
 
 	private int id;

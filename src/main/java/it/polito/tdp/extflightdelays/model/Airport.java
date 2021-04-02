@@ -1,5 +1,6 @@
 package it.polito.tdp.extflightdelays.model;
 
+//javabean che descrive un aeroporto
 public class Airport {
 	
 	private int id;
