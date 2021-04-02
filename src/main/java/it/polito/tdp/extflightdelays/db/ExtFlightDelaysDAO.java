@@ -93,13 +93,10 @@ public class ExtFlightDelaysDAO {
 		}
 	}
 
-	public Map<Integer, Airport> getDBAirport() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/*SELECT AVG(distance)
+	FROM flights
+	WHERE (origin_airport_id=85 AND destination_airport_id=151)
+	OR (origin_airport_id=151 AND destination_airport_id=85)*/
 
-	public List<Flight> getDBFlight(int migliaUtente) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }

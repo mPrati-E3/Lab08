@@ -56,8 +56,9 @@ public class FXMLController {
 
     private void Stampante(Graph<Airport, DefaultWeightedEdge> tratte) {
 		txtResult.clear();
-		txtResult.appendText("Numero di vertici: ");
-		txtResult.appendText("Numero di archi: ");
+		txtResult.appendText("Numero di vertici: "+tratte.vertexSet().size()+"\n");
+		txtResult.appendText("Numero di archi: "+tratte.edgeSet().size()+"\n\n\n");
+	
 		
 		//TODO: stampa di tutti gli archi con relativo peso
 		
